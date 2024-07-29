@@ -121,5 +121,10 @@ namespace EcommercewebsitewithApi.Controllers
             }
             return Unauthorized();
         }
+        [HttpGet]
+        public IActionResult createapp()
+        {
+            return Ok();
+        }
     }
 }
