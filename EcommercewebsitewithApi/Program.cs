@@ -39,7 +39,7 @@ var builder = WebApplication.CreateBuilder(args);
         options.AddPolicy("AllowReactApp",
             builder =>
             {
-                builder.WithOrigins("http://localhost:3001")
+                builder.WithOrigins("http://localhost:3000")
                        .AllowAnyHeader()
                        .AllowAnyMethod();
             });

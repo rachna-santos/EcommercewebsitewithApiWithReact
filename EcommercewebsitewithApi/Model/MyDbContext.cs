@@ -22,18 +22,19 @@ namespace EcommercewebsitewithApi.Model
         public DbSet<Order_Details> order_Details { get; set;}
         public DbSet<Brand> brands { get; set;}
         public DbSet<Color> colors { get; set;}
-        public DbSet<Material> materials { get; set; }
-        public DbSet<Size> sizes { get; set; }
-        public DbSet<Gender> genders { get; set; }
+        public DbSet<Material> materials {get; set;}
+        public DbSet<Size> sizes {get; set;}
+        public DbSet<Gender> genders {get; set;}
         public DbSet<UserDetails> userDetails {get; set;}
-        public DbSet<City> cities { get; set; }
-        public DbSet<Country> countries { get; set; }
+        public DbSet<City> cities {get; set;}
+        public DbSet<Country> countries { get; set;}
         public DbSet<CategoryStyle> categoryStyles { get; set; }
         public DbSet<ProductSeason> productSeasons { get; set; }
         public DbSet<productveriation> productveriations { get; set; }
         public DbSet<ProductImage> productImages { get; set; }
-
-
+        public DbSet<userCountry> userCountries { get; set; }
+        public DbSet<UserCity> userCities { get; set; }
+        public DbSet<Customer> customers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

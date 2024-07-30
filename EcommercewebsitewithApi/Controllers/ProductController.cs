@@ -829,43 +829,55 @@ namespace EcommercewebsitewithApi.Controllers
             }
             return Ok();
         }
+        [HttpPost("createcountryUser")]
+        public IActionResult Create([FromBody] userCountry country)
+        {
+            country.CountryName=country.CountryName;
+            country.Createdate = DateTime.Now;
+            country.lastdate = DateTime.Now;
+            _context.userCountries.Add(country);
+            _context.SaveChanges();
+            return Ok();
+        }
+        [HttpPost("createcityUser")]
+        public IActionResult Create([FromBody] UserCity city)
+        {
 
-        //public IActionResult UserRegistter([FromBody] UserDetails user)
-        //{
-        //    var users = _context.userDetails.Add(user);
-        //    _context.SaveChanges();
-        //    return Ok();
-        //}
-        //public IActionResult Login([FromBody] UserDetails user)
-        //{
-        //    if (user == null)
-        //    {
-        //        return BadRequest("Invalid client request");
-        //    }
+            city.CityName = city.CityName;
+            city.Createdate = DateTime.Now;
+            city.lastdate = DateTime.Now;
+            _context.userCities.Add(city);
+            _context.SaveChanges();
+            return Ok();
+        }
 
-        //    // Validate user credentials
-        //    var authenticatedUser =_context.userDetails.FirstOrDefault(u => u.name == user.name && u.password == user.password);
+        [HttpGet("usercityGet")]
+        public IActionResult citylist()
+        {
+            var city = _context.userCities.ToList();
+            return Ok(city);
+        }
 
-        //    //if (authenticatedUser == null)
-        //    //{
-        //    //    return Unauthorized();
-        //    //}
-        //    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
-        //    var token = new JwtSecurityToken(
-        //   issuer: _configuration["JWT:ValidIssuer"],
-        //   audience: _configuration["JWT:ValidAudience"],
-        //   expires: DateTime.Now.AddHours(3),
-        //   signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-
-        //   );
-        //    return Ok(new
-        //    {
-        //        token = new JwtSecurityTokenHandler().WriteToken(token),
-        //        expiration = token.ValidTo
-        //    });
-        //}
-
+        [HttpGet("userCountryGet")]
+        public IActionResult countrylist()
+        {
+            var country = _context.userCountries.ToList();
+            return Ok(country);
+        }
+        [HttpPost("createcustomer")]
+        public IActionResult Create([FromBody] Customer customer)
+        {
+            customer.Name = customer.Name;
+            customer.Email = customer.Email;
+            customer.Password = customer.Password;
+            customer.Address = customer.Address;
+            customer.Telephone = customer.Telephone;
+            customer.CountryId = customer.CountryId;
+            customer.CityId = customer.CityId;
+            _context.customers.Add(customer);
+            _context.SaveChanges();
+            return Ok();
+        }
 
     }
 }

@@ -41,9 +41,9 @@ namespace EcommercewebsitewithApi.Controllers
         [HttpPost("CreateUser")]
         public async Task<IActionResult> Create([FromBody] User model)
         {
-            
                 var user = new ApplicationUser
                 {
+
                     UserName = model.UserName,
                     Email = model.Email,
                     CompanyId = model.CompanyId,
@@ -51,7 +51,6 @@ namespace EcommercewebsitewithApi.Controllers
                     PasswordHash = model.Password,
                     createdate = DateTime.Now,
                     Lastmodifieddate = DateTime.Now,
-                    
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -81,7 +80,8 @@ namespace EcommercewebsitewithApi.Controllers
                     }
                     ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
-            return Ok();
+
+                return Ok();
 
         }
         [HttpPost("Login")]
@@ -121,10 +121,6 @@ namespace EcommercewebsitewithApi.Controllers
             }
             return Unauthorized();
         }
-        [HttpGet]
-        public IActionResult createapp()
-        {
-            return Ok();
-        }
+       
     }
 }

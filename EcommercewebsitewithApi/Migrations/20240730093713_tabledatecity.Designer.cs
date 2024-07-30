@@ -4,6 +4,7 @@ using EcommercewebsitewithApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommercewebsitewithApi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240730093713_tabledatecity")]
+    partial class tabledatecity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -408,11 +410,11 @@ namespace EcommercewebsitewithApi.Migrations
 
             modelBuilder.Entity("EcommercewebsitewithApi.Model.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Name")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Name"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -431,10 +433,6 @@ namespace EcommercewebsitewithApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -450,7 +448,11 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Property<DateTime>("lastdate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("Name");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("customers");
                 });
@@ -994,6 +996,8 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasKey("CityId");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("userCities");
                 });
 
@@ -1284,6 +1288,25 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Navigation("Status");
                 });
 
+            modelBuilder.Entity("EcommercewebsitewithApi.Model.Customer", b =>
+                {
+                    b.HasOne("EcommercewebsitewithApi.Model.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EcommercewebsitewithApi.Model.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+                });
+
             modelBuilder.Entity("EcommercewebsitewithApi.Model.Gender", b =>
                 {
                     b.HasOne("EcommercewebsitewithApi.Model.Status", "Status")
@@ -1434,6 +1457,17 @@ namespace EcommercewebsitewithApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("EcommercewebsitewithApi.Model.UserCity", b =>
+                {
+                    b.HasOne("EcommercewebsitewithApi.Model.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
