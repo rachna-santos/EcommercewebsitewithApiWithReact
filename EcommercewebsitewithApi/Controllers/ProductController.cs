@@ -321,6 +321,9 @@ namespace EcommercewebsitewithApi.Controllers
             {
                 return BadRequest(product);
             }
+            product.BrandName = model.BrandName;
+            product.BrandDescription = model.BrandDescription;
+            product.BrandPhone = model.BrandPhone;
             product.Title = model.Title;
             product.StatusId = model.StatusId;
             product.Createdate = DateTime.Now;
@@ -794,18 +797,14 @@ namespace EcommercewebsitewithApi.Controllers
         }
 
         [HttpPost("ImageAdd")]
-        public async Task<IActionResult> CreateImage([FromForm] ProductImage model, List<IFormFile> file)
+        public async Task<IActionResult> CreateImage([FromForm] ProductImage model)
         {
-            for (int i = 0; i < file.Count; i++)
+            for (int i = 0; i < model.profilepicture.Count; i++)
             {
-                model.CreateDate = DateTime.Now;
-                model.Lastmodifield = DateTime.Now;
-                model.StatusId = model.StatusId;
-                model.productId = model.productId;
-                var files = file[i];
+                var files = model.profilepicture[i];
                 if (files.Length > 0)
                 {
-                    var uniqueFileName = $"{model.productId}_{i + 1}.jpg";
+                    var uniqueFileName = $"{model.productId}_{i + 1}_{Guid.NewGuid().ToString()}.jpg";
                     var imageDirectory = Path.Combine(hostEnvironment.WebRootPath, "Image/ProductImage");
                     var filename = "Image/ProductImage/" + uniqueFileName;
                     var fullImagePath = Path.Combine(imageDirectory, uniqueFileName);
@@ -819,12 +818,18 @@ namespace EcommercewebsitewithApi.Controllers
                         await files.CopyToAsync(stream);
                     }
 
-                    model.iamgepath = filename;
-                    model.imagepath_thumb = filename;
-                    _context.productImages.Add(model);
-                    _context.SaveChanges();
-                    return Ok(model);
+                    var newImage = new ProductImage
+                    {
+                        CreateDate = DateTime.Now,
+                        Lastmodifield = DateTime.Now,
+                        StatusId = 5,
+                        productId = model.productId,
+                        iamgepath = filename,
+                        imagepath_thumb = filename
+                    };
 
+                    _context.productImages.Add(newImage);
+                    await _context.SaveChangesAsync();
                 }
             }
             return Ok();
@@ -865,7 +870,7 @@ namespace EcommercewebsitewithApi.Controllers
             return Ok(country);
         }
         [HttpPost("createcustomer")]
-        public IActionResult Create([FromBody] Customer customer)
+        public IActionResult Create([FromForm] Customer customer)
         {
             customer.Name = customer.Name;
             customer.Email = customer.Email;
@@ -878,6 +883,30 @@ namespace EcommercewebsitewithApi.Controllers
             _context.SaveChanges();
             return Ok();
         }
+        [HttpPost("LoginCustomer")]
+        public IActionResult Login([FromBody] customerlogin customer)
+        {
+            var cust = _context.customers.FirstOrDefault(p => p.Email == customer.Email && p.Password==customer.Password);
+            if (cust!=null)
+            {
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+                var token = new JwtSecurityToken(
+               issuer: _configuration["JWT:ValidIssuer"],
+               audience: _configuration["JWT:ValidAudience"],
+               expires: DateTime.Now.AddHours(3),
+               signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+
+               );
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+            }
+            return Unauthorized();
+        }
+
 
     }
 }

@@ -35,6 +35,8 @@ namespace EcommercewebsitewithApi.Model
         public DbSet<userCountry> userCountries { get; set; }
         public DbSet<UserCity> userCities { get; set; }
         public DbSet<Customer> customers { get; set; }
+        public DbSet<customerlogin> customerlogins { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

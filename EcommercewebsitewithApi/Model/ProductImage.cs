@@ -17,6 +17,6 @@ namespace EcommercewebsitewithApi.Model
         public DateTime CreateDate { get; set; }
         public DateTime Lastmodifield { get; set; }
         [NotMapped]
-        public IFormFile profilepicture { get; set; }
+        public List<IFormFile> profilepicture { get; set; }
     }
 }
