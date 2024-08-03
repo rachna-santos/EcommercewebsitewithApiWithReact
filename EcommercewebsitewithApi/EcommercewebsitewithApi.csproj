@@ -26,6 +26,7 @@
     <Folder Include="wwwroot\Image\Brand\" />
     <Folder Include="wwwroot\Image\Gender\" />
     <Folder Include="wwwroot\Image\Color\" />
+    <Folder Include="wwwroot\Image\ProductVeriation\" />
     <Folder Include="wwwroot\Image\ProductImage\" />
     <Folder Include="wwwroot\Image\ProductSeason\" />
     <Folder Include="wwwroot\Image\SubCategory\" />

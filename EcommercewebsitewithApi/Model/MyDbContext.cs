@@ -30,12 +30,14 @@ namespace EcommercewebsitewithApi.Model
         public DbSet<Country> countries { get; set;}
         public DbSet<CategoryStyle> categoryStyles { get; set; }
         public DbSet<ProductSeason> productSeasons { get; set; }
-        public DbSet<productveriation> productveriations { get; set; }
+        public DbSet<Productveriation> productveriations { get; set; }
         public DbSet<ProductImage> productImages { get; set; }
         public DbSet<userCountry> userCountries { get; set; }
         public DbSet<UserCity> userCities { get; set; }
         public DbSet<Customer> customers { get; set; }
         public DbSet<customerlogin> customerlogins { get; set; }
+        public DbSet<ShoppingCart> shoppingCarts { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

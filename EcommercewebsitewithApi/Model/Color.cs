@@ -6,7 +6,7 @@ namespace EcommercewebsitewithApi.Model
     public class Color
     {
         [Key]
-        public int Id {get; set;}
+        public int ColorId { get; set;}
         public string colorName { get; set; }
         public string? ImagePath { get; set; }
         public string colorcode1 { get; set; }

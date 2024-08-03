@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
 using NuGet.Versioning;
+using System.Drawing;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -511,111 +513,111 @@ namespace EcommercewebsitewithApi.Controllers
             return Ok();
         }
         [HttpPost("sizeCreate")]
-        public async Task<IActionResult> Create([FromBody] Size model)
-        {
-            model.lastdate = DateTime.Now;
-            model.Createdate = DateTime.Now;
-            _context.sizes.Add(model);
-            _context.SaveChanges();
-            return Ok(model);
-        }
-        [HttpGet("SizeEditId")]
-        public async Task<IActionResult> SizeEdit(int id)
-        {
-            var product = _context.sizes.FirstOrDefault(x => x.SizeId == id);
-            return Ok(product);
-        }
-        [HttpPut("sizeEdit")]
-        public async Task<IActionResult> SizeEdit(int id, [FromForm] Size model)
-        {
-            var product = await _context.sizes.FindAsync(id);
-            if (product == null)
-            {
-                return BadRequest();
-            }
-            product.SizeName = model.SizeName;
-            product.lastdate = DateTime.Now;
-            product.Createdate = DateTime.Now;
-            product.StatusId = model.StatusId;
-            _context.sizes.Update(product);
-            _context.SaveChanges();
-            return Ok(model);
-        }
-        [HttpDelete("sizeDelete")]
-        public async Task<IActionResult> SizeDelete(int id)
-        {
-            var product = _context.sizes.Find(id);
-            _context.sizes.Remove(product);
-            _context.SaveChanges();
-            return Ok();
-        }
+        //public async Task<IActionResult> Create([FromBody] Size model)
+        //{
+        //    model.lastdate = DateTime.Now;
+        //    model.Createdate = DateTime.Now;
+        //    _context.sizes.Add(model);
+        //    _context.SaveChanges();
+        //    return Ok(model);
+        //}
+        //[HttpGet("SizeEditId")]
+        //public async Task<IActionResult> SizeEdit(int id)
+        //{
+        //    var product = _context.sizes.FirstOrDefault(x => x.SizeId == id);
+        //    return Ok(product);
+        //}
+        //[HttpPut("sizeEdit")]
+        //public async Task<IActionResult> SizeEdit(int id, [FromForm] Size model)
+        //{
+        //    var product = await _context.sizes.FindAsync(id);
+        //    if (product == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    product.SizeName = model.SizeName;
+        //    product.lastdate = DateTime.Now;
+        //    product.Createdate = DateTime.Now;
+        //    product.StatusId = model.StatusId;
+        //    _context.sizes.Update(product);
+        //    _context.SaveChanges();
+        //    return Ok(model);
+        //}
+        //[HttpDelete("sizeDelete")]
+        //public async Task<IActionResult> SizeDelete(int id)
+        //{
+        //    var product = _context.sizes.Find(id);
+        //    _context.sizes.Remove(product);
+        //    _context.SaveChanges();
+        //    return Ok();
+        //}
 
-        [HttpPost("ColorCreate")]
-        public async Task<IActionResult> ColorCreate([FromForm] Color model)
-        {
-            model.lastdate = DateTime.Now;
-            model.Createdate = DateTime.Now;
-            _context.colors.Add(model);
-            _context.SaveChanges();
-            var file = model.image;
-            var uniqueFileName = $"{model.Id}.jpg";
-            var imageDirectory = Path.Combine(hostEnvironment.WebRootPath, "Image/Color");
-            var filename = "Image/Color" + uniqueFileName;
-            var fullImagePath = Path.Combine(imageDirectory, uniqueFileName);
-            if (!Directory.Exists(imageDirectory))
-            {
-                Directory.CreateDirectory(imageDirectory);
-            }
-            using (var stream = new FileStream(fullImagePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            model.ImagePath = filename;
-            _context.colors.Update(model);
-            _context.SaveChanges();
-            return Ok(model);
-        }
-        [HttpGet("ColorEditId")]
-        public async Task<IActionResult> EditId(int id)
-        {
-            var product = _context.colors.FirstOrDefault(x => x.Id == id);
-            return Ok(product);
-        }
+        //[HttpPost("ColorCreate")]
+        //public async Task<IActionResult> ColorCreate([FromForm] Color model)
+        //{
+        //    model.lastdate = DateTime.Now;
+        //    model.Createdate = DateTime.Now;
+        //    _context.colors.Add(model);
+        //    _context.SaveChanges();
+        //    var file = model.image;
+        //    var uniqueFileName = $"{model.ColorId}.jpg";
+        //    var imageDirectory = Path.Combine(hostEnvironment.WebRootPath, "Image/Color");
+        //    var filename = "Image/Color" + uniqueFileName;
+        //    var fullImagePath = Path.Combine(imageDirectory, uniqueFileName);
+        //    if (!Directory.Exists(imageDirectory))
+        //    {
+        //        Directory.CreateDirectory(imageDirectory);
+        //    }
+        //    using (var stream = new FileStream(fullImagePath, FileMode.Create))
+        //    {
+        //        await file.CopyToAsync(stream);
+        //    }
+        //    model.ImagePath = filename;
+        //    _context.colors.Update(model);
+        //    _context.SaveChanges();
+        //    return Ok(model);
+        //}
+        //[HttpGet("ColorEditId")]
+        //public async Task<IActionResult> EditId(int id)
+        //{
+        //    var product = _context.colors.FirstOrDefault(x => x.ColorId == id);
+        //    return Ok(product);
+        //}
 
-        [HttpPut("ColorEdit")]
-        public async Task<IActionResult> ColorEdit(int id, [FromForm] Color model)
-        {
-            var product = await _context.colors.FindAsync(id);
-            if (product == null)
-            {
-                return BadRequest(product);
-            }
-            product.colorName = model.colorName;
-            product.colorcode1 = model.colorcode1;
-            product.colorcode2 = model.colorcode2;
-            product.StatusId = model.StatusId;
-            product.Createdate = DateTime.Now;
-            product.lastdate = DateTime.Now;
-            var file = model.image;
-            var uniqueFileName = $"{product.Id}.jpg";
-            var imageDirectory = Path.Combine(hostEnvironment.WebRootPath, "Image/Color");
-            var filename = "Image/Color/" + uniqueFileName;
-            var fullImagePath = Path.Combine(imageDirectory, uniqueFileName);
-            if (!Directory.Exists(imageDirectory))
-            {
-                Directory.CreateDirectory(imageDirectory);
-            }
-            using (var stream = new FileStream(fullImagePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            product.ImagePath = filename;
-            //_context.category.Update(product);
-            _context.Entry(product).State = EntityState.Modified;
-            _context.SaveChanges();
-            return Ok(product);
-        }
-        [HttpDelete("deleteColor")]
+        //[HttpPut("ColorEdit")]
+        //public async Task<IActionResult> ColorEdit(int id, [FromForm] Color model)
+        //{
+        //    var product = await _context.colors.FindAsync(id);
+        //    if (product == null)
+        //    {
+        //        return BadRequest(product);
+        //    }
+        //    product.colorName = model.colorName;
+        //    product.colorcode1 = model.colorcode1;
+        //    product.colorcode2 = model.colorcode2;
+        //    product.StatusId = model.StatusId;
+        //    product.Createdate = DateTime.Now;
+        //    product.lastdate = DateTime.Now;
+        //    var file = model.image;
+        //    var uniqueFileName = $"{product.ColorId}.jpg";
+        //    var imageDirectory = Path.Combine(hostEnvironment.WebRootPath, "Image/Color");
+        //    var filename = "Image/Color/" + uniqueFileName;
+        //    var fullImagePath = Path.Combine(imageDirectory, uniqueFileName);
+        //    if (!Directory.Exists(imageDirectory))
+        //    {
+        //        Directory.CreateDirectory(imageDirectory);
+        //    }
+        //    using (var stream = new FileStream(fullImagePath, FileMode.Create))
+        //    {
+        //        await file.CopyToAsync(stream);
+        //    }
+        //    product.ImagePath = filename;
+        //    //_context.category.Update(product);
+        //    _context.Entry(product).State = EntityState.Modified;
+        //    _context.SaveChanges();
+        //    return Ok(product);
+        //}
+        //[HttpDelete("deleteColor")]
         public async Task<IActionResult> ColorDelete(int id)
         {
             var data = _context.colors.Find(id);
@@ -662,7 +664,7 @@ namespace EcommercewebsitewithApi.Controllers
         {
 
             var country = await _context.countries.FindAsync(id);
-            country.countryName=model.countryName;
+            country.countryName = model.countryName;
             _context.countries.Update(country);
             _context.SaveChanges();
             return Ok(model);
@@ -677,11 +679,11 @@ namespace EcommercewebsitewithApi.Controllers
         [HttpPost("CityCreate")]
         public async Task<IActionResult> CityCreate([FromBody] City model)
         {
-                 model.cityName = model.cityName;
-                model.cityName = model.cityName;
-                 _context.cities.Add(model);
-                _context.SaveChanges();
-                return Ok(model);
+            model.cityName = model.cityName;
+            model.cityName = model.cityName;
+            _context.cities.Add(model);
+            _context.SaveChanges();
+            return Ok(model);
         }
 
         [HttpGet("Editcityid")]
@@ -724,8 +726,8 @@ namespace EcommercewebsitewithApi.Controllers
         [HttpPost("createSeasonProdcut")]
         public async Task<IActionResult> Create([FromForm] ProductSeason model)
         {
-            model.CreateDate= DateTime.Now;
-            model.Lastmodifield=DateTime.Now;
+            model.CreateDate = DateTime.Now;
+            model.Lastmodifield = DateTime.Now;
             _context.productSeasons.Add(model);
             _context.SaveChanges();
             var file = model.image;
@@ -782,7 +784,7 @@ namespace EcommercewebsitewithApi.Controllers
             _context.SaveChanges();
             return Ok(model);
 
-         }
+        }
 
         [HttpDelete("Deleteseason")]
         public async Task<IActionResult> SeasonDelete(int id)
@@ -790,7 +792,7 @@ namespace EcommercewebsitewithApi.Controllers
             var season = await _context.productSeasons.FindAsync(id);
             var imagePath = Path.Combine(hostEnvironment.WebRootPath, "Image/ProductSeason", season.imagepath);
             if (System.IO.File.Exists(imagePath))
-            System.IO.File.Delete(imagePath);
+                System.IO.File.Delete(imagePath);
             _context.productSeasons.Remove(season);
             await _context.SaveChangesAsync();
             return Ok();
@@ -837,7 +839,7 @@ namespace EcommercewebsitewithApi.Controllers
         [HttpPost("createcountryUser")]
         public IActionResult Create([FromBody] userCountry country)
         {
-            country.CountryName=country.CountryName;
+            country.CountryName = country.CountryName;
             country.Createdate = DateTime.Now;
             country.lastdate = DateTime.Now;
             _context.userCountries.Add(country);
@@ -886,8 +888,8 @@ namespace EcommercewebsitewithApi.Controllers
         [HttpPost("LoginCustomer")]
         public IActionResult Login([FromBody] customerlogin customer)
         {
-            var cust = _context.customers.FirstOrDefault(p => p.Email == customer.Email && p.Password==customer.Password);
-            if (cust!=null)
+            var cust = _context.customers.FirstOrDefault(p => p.Email == customer.Email && p.Password == customer.Password);
+            if (cust != null)
             {
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
@@ -907,8 +909,44 @@ namespace EcommercewebsitewithApi.Controllers
             return Unauthorized();
         }
 
+        [HttpPost("CreateVeriation")]
+        public IActionResult AddVeriation([FromForm] Productveriation model)
+        {
+            var productId = model.productId;
+            var image = _context.productImages.Where(p => p.productId == model.productId).Select(p => p.iamgepath).ToList();
+            foreach (var item in image)
+            {
+                var veriation = new Productveriation
+                {
+                    BrandId = model.BrandId,
+                    veriationName = model.veriationName,
+                    productId = model.productId,
+                    categoryId = model.categoryId,
+                    costprice = model.costprice,
+                    RetailerPrice = model.RetailerPrice,
+                    ColoId = model.ColoId,
+                    StatusId = 5,
+                    Quantity = model.Quantity,
+                    CreateDate = DateTime.Now,
+                    Lastmodifield = DateTime.Now,
+                };
+                  veriation.image = item.ToString();
+                _context.productveriations.Add(veriation);
+                _context.SaveChanges();
+            }
+     
+             return Ok();
 
+        }
+
+        [HttpGet("GetVeriation")]
+        public IActionResult getVeraition() 
+        {
+            var productveraition = _context.productveriations.ToList();
+            return Ok(productveraition); 
+        }
     }
+    
 }
 
 

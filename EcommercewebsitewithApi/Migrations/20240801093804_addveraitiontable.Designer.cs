@@ -4,6 +4,7 @@ using EcommercewebsitewithApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommercewebsitewithApi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240801093804_addveraitiontable")]
+    partial class addveraitiontable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -831,7 +833,7 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasIndex("productId");
 
-                    b.ToTable("productveriations");
+                    b.ToTable("Productveriation");
                 });
 
             modelBuilder.Entity("EcommercewebsitewithApi.Model.ShoppingCart", b =>

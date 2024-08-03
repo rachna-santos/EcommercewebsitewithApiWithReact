@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
     var validAudience = jwtConfiguration["ValidAudience"];
     var validIssuer = jwtConfiguration["ValidIssuer"];
     var secret = jwtConfiguration["Secret"];
+
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {

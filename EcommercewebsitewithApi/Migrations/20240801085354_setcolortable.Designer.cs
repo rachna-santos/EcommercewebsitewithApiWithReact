@@ -4,6 +4,7 @@ using EcommercewebsitewithApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommercewebsitewithApi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240801085354_setcolortable")]
+    partial class setcolortable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -774,7 +776,7 @@ namespace EcommercewebsitewithApi.Migrations
                     b.ToTable("productSeasons");
                 });
 
-            modelBuilder.Entity("EcommercewebsitewithApi.Model.Productveriation", b =>
+            modelBuilder.Entity("EcommercewebsitewithApi.Model.productveriation", b =>
                 {
                     b.Property<int>("veriationId")
                         .ValueGeneratedOnAdd()
@@ -785,11 +787,11 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ColoId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Lastmodifield")
                         .HasColumnType("datetime2");
@@ -815,6 +817,9 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Property<int>("productId")
                         .HasColumnType("int");
 
+                    b.Property<int>("subcategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("veriationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -823,13 +828,15 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("ColoId");
+                    b.HasIndex("Id");
 
                     b.HasIndex("StatusId");
 
                     b.HasIndex("categoryId");
 
                     b.HasIndex("productId");
+
+                    b.HasIndex("subcategoryId");
 
                     b.ToTable("productveriations");
                 });
@@ -848,7 +855,13 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Property<DateTime>("Createdate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductveriationveriationId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -870,9 +883,9 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasIndex("ColorId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("veriationId");
+                    b.HasIndex("ProductveriationveriationId");
 
                     b.ToTable("shoppingCarts");
                 });
@@ -1381,7 +1394,7 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EcommercewebsitewithApi.Model.Productveriation", b =>
+            modelBuilder.Entity("EcommercewebsitewithApi.Model.productveriation", b =>
                 {
                     b.HasOne("EcommercewebsitewithApi.Model.Brand", "Brand")
                         .WithMany()
@@ -1391,7 +1404,7 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasOne("EcommercewebsitewithApi.Model.Color", "Color")
                         .WithMany()
-                        .HasForeignKey("ColoId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1413,6 +1426,12 @@ namespace EcommercewebsitewithApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EcommercewebsitewithApi.Model.SubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("subcategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
@@ -1422,6 +1441,8 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Status");
+
+                    b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("EcommercewebsitewithApi.Model.ShoppingCart", b =>
@@ -1434,13 +1455,13 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasOne("EcommercewebsitewithApi.Model.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EcommercewebsitewithApi.Model.Productveriation", "Productveriation")
+                    b.HasOne("EcommercewebsitewithApi.Model.productveriation", "Productveriation")
                         .WithMany()
-                        .HasForeignKey("veriationId")
+                        .HasForeignKey("ProductveriationveriationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
