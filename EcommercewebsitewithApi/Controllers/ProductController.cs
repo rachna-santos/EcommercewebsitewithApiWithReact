@@ -16,7 +16,7 @@ namespace EcommercewebsitewithApi.Controllers
 {
     [Route("api/[controller]")]
     //[ApiController]
-    //[Authorize]
+        //[Authorize]
     public class ProductController : ControllerBase
     {
         private readonly MyDbContext _context;
@@ -28,8 +28,9 @@ namespace EcommercewebsitewithApi.Controllers
             _context = context;
             this.hostEnvironment = hostEnvironment;
             _configuration = configuration;
-
         }
+
+        [Authorize]
 
         [HttpGet("ProductGet")]
         public IActionResult Get()
@@ -891,6 +892,11 @@ namespace EcommercewebsitewithApi.Controllers
             var cust = _context.customers.FirstOrDefault(p => p.Email == customer.Email && p.Password == customer.Password);
             if (cust != null)
             {
+                Response.Cookies.Append("Custid", cust.Id.ToString(), new CookieOptions
+                {
+                    Expires = DateTime.UtcNow.AddMonths(1)
+                }); 
+
                 var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
                 var token = new JwtSecurityToken(
@@ -905,6 +911,7 @@ namespace EcommercewebsitewithApi.Controllers
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
                 });
+
             }
             return Unauthorized();
         }
@@ -940,11 +947,34 @@ namespace EcommercewebsitewithApi.Controllers
         }
 
         [HttpGet("GetVeriation")]
-        public IActionResult getVeraition() 
+        public IActionResult getVeraition(int productId) 
         {
-            var productveraition = _context.productveriations.ToList();
+            var productveraition = _context.productveriations.Where(p => p.productId == productId).ToList();
             return Ok(productveraition); 
         }
+        [HttpPost("Addtocard")]
+        public IActionResult addtocard(int veriationid)
+        {
+
+            int? Custid =Request.Cookies["Custid"]!=null ? int.Parse(Request.Cookies["Custid"]) : (int?)null;
+
+            Productveriation p = _context.productveriations.Include(p=>p.Product).Where(p => p.veriationId == veriationid).FirstOrDefault();
+
+            Cart_item cart = new Cart_item();
+            cart.veriationId = veriationid;
+            cart.quantity =p.Quantity;
+            cart.price = p.costprice;
+            cart.ColorId = p.ColoId;
+            cart.bill = p.Quantity * p.costprice;
+            cart.image = p.image;
+            cart.Id = Custid.Value;
+            List<Cart_item> cartitem = HttpContext.Session.GetObject<List<Cart_item>>("Cart") ?? new List<Cart_item>();
+            cartitem.Add(cart);
+            HttpContext.Session.SetObject("Cart", cartitem);
+            return Ok();
+
+        }
+
     }
     
 }

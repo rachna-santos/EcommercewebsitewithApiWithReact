@@ -9,14 +9,13 @@ namespace EcommercewebsitewithApi.Model
         {
 
         }
-        public DbSet<User> register { get; set; }
-        public DbSet<Login> login { get; set; }
-        public DbSet<Status> Statuses { get; set; }
+        public DbSet<User> register {get; set;}
+        public DbSet<Login> login { get; set;}
+        public DbSet<Status> Statuses { get; set;}
         public DbSet<Company> companies { get; set; }
         public DbSet<Product> product { get; set; }
         public DbSet<Category> category { get; set; }
         public DbSet<SubCategory> subCategories { get; set;}
-        public DbSet<Cart> carts { get; set;}
         public DbSet<Cart_item> cart_Items { get; set;}
         public DbSet<Order> orders { get; set; }
         public DbSet<Order_Details> order_Details { get; set;}

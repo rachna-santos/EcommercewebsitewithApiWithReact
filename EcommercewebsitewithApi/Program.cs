@@ -45,7 +45,15 @@ var builder = WebApplication.CreateBuilder(args);
                        .AllowAnyMethod();
             });
     });
-    builder.Services.AddControllers();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(1); // Session timeout set to 1 day
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+
+});
+builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
@@ -128,4 +136,5 @@ var builder = WebApplication.CreateBuilder(args);
     app.UseAuthentication();
     app.UseAuthorization();
     app.MapControllers();
+    app.UseSession();
     app.Run();

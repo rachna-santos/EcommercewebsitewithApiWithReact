@@ -4,6 +4,7 @@ using EcommercewebsitewithApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommercewebsitewithApi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815111126_newadds")]
+    partial class newadds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,47 +162,6 @@ namespace EcommercewebsitewithApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Cart");
-                });
-
-            modelBuilder.Entity("EcommercewebsitewithApi.Model.Cart_item", b =>
-                {
-                    b.Property<int>("cart_item")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("cart_item"), 1L, 1);
-
-                    b.Property<int>("ColorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("bill")
-                        .HasColumnType("int");
-
-                    b.Property<string>("image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("veriationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("cart_item");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("Id");
-
-                    b.HasIndex("veriationId");
-
-                    b.ToTable("cart_Items");
                 });
 
             modelBuilder.Entity("EcommercewebsitewithApi.Model.Category", b =>
@@ -1282,33 +1243,6 @@ namespace EcommercewebsitewithApi.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("EcommercewebsitewithApi.Model.Cart_item", b =>
-                {
-                    b.HasOne("EcommercewebsitewithApi.Model.Color", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcommercewebsitewithApi.Model.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcommercewebsitewithApi.Model.Productveriation", "Productveriation")
-                        .WithMany()
-                        .HasForeignKey("veriationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Color");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Productveriation");
                 });
 
             modelBuilder.Entity("EcommercewebsitewithApi.Model.CategoryStyle", b =>

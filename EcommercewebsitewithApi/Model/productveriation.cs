@@ -13,7 +13,7 @@ namespace EcommercewebsitewithApi.Model
         public int Quantity { get; set; }
         public string? image { get; set;}
         public int productId { get; set;}
-        //public virtual Product Product {get; set;}
+        public virtual Product Product {get; set;}
         [ForeignKey("Color")]
         public int ColoId { get; set; }
         //public virtual Color Color {get; set;}

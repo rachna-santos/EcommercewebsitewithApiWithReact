@@ -4,6 +4,7 @@ using EcommercewebsitewithApi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommercewebsitewithApi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815110437_carddetails")]
+    partial class carddetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +175,13 @@ namespace EcommercewebsitewithApi.Migrations
                     b.Property<int>("ColorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductveriationveriationId")
                         .HasColumnType("int");
 
                     b.Property<int>("bill")
@@ -196,9 +204,9 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasIndex("ColorId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("veriationId");
+                    b.HasIndex("ProductveriationveriationId");
 
                     b.ToTable("cart_Items");
                 });
@@ -1294,13 +1302,13 @@ namespace EcommercewebsitewithApi.Migrations
 
                     b.HasOne("EcommercewebsitewithApi.Model.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EcommercewebsitewithApi.Model.Productveriation", "Productveriation")
                         .WithMany()
-                        .HasForeignKey("veriationId")
+                        .HasForeignKey("ProductveriationveriationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
